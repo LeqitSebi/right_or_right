@@ -3,9 +3,10 @@ import java.util.Optional;
 public class Potion {
     private String name;
     private Effect effect;
-    private int count;
 
-    public Potion(String name, String effect, int count) {
+    //TODO: add Potion List
+
+    public Potion(String name, String effect) {
         this.name = name;
         Optional<Effect> possibleEffect = Effect.effects.stream().filter(n -> n.getName().equals(effect)).findFirst();
         if (possibleEffect.isPresent()){
@@ -13,7 +14,6 @@ public class Potion {
         }else{
             throw new IllegalArgumentException("Effect doesn't exist!");
         }
-        this.count = count;
     }
 
     public String getName() {
@@ -32,13 +32,7 @@ public class Potion {
         this.effect = effect;
     }
 
-    public int getCount() {
-        return count;
-    }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     @Override
     public String toString() {

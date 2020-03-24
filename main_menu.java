@@ -114,6 +114,18 @@ public class main_menu {
             Player.player.setMaxhealth(Double.parseDouble(line));
             line = inFile.readLine();
             String[] helper = line.split(",");
+            LinkedList<Effect> items = new LinkedList<>();
+            //TODO: save player list
+            for (int i = 0; i < helper.length; i++) {
+                Optional<Item> optionalEffect = Item.items.stream().filter(n -> n.getName().equals(helper[0])).findFirst();
+                if (optionalEffect.isPresent()){
+                    items.add(optionalEffect.get());
+                }else{
+                    throw new IllegalArgumentException("Effect doesn't exist!");
+                }
+            }
+            line = inFile.readLine();
+            helper = line.split(",");
             LinkedList<Effect> effects = new LinkedList<>();
             for (int i = 0; i < helper.length; i++) {
                 Optional<Effect> optionalEffect = Effect.effects.stream().filter(n -> n.getName().equals(helper[0])).findFirst();
@@ -134,10 +146,11 @@ public class main_menu {
         file.delete();
         file.createNewFile();
         BufferedWriter out = Files.newBufferedWriter(Paths.get(String.valueOf(file)), StandardCharsets.UTF_8);
-        out.write("Du hure schreib was°!°1²12");
         out.write(Player.player.getName() + System.lineSeparator());
         out.write(Player.player.getHealth() + System.lineSeparator());
         out.write(Player.player.getMaxhealth() + System.lineSeparator());
+        out.write(Player.player.getItems() + System.lineSeparator());
+        out.write(Player.player.getWeapons() + System.lineSeparator());
         out.write(Player.player.getEffects() + System.lineSeparator());
         out.write((int) Player.player.getCoins());
     }

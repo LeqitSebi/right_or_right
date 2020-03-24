@@ -4,18 +4,24 @@ public class Player {
     private String name;
     private double health;
     private double maxhealth;
+    private LinkedList<Item> items;
+    private LinkedList<Weapon> weapons;
     private LinkedList<Effect> effects;
     private double coins;
 
-    public Player(String name, double health, double maxhealth, LinkedList<Effect> effects, double coins) {
+    public Player(String name, double health, double maxhealth, LinkedList<Item> items, LinkedList<Weapon> weapons, LinkedList<Effect> effects, double coins) {
         this.name = name;
         this.health = health;
         this.maxhealth = maxhealth;
+        this.items = items;
+        this.weapons = weapons;
         this.effects = effects;
         this.coins = coins;
     }
 
-    static Player player = new Player(null, 20, 20, new LinkedList<>(), 1);
+    //TODO: add Potions list to player
+
+    static Player player = new Player(null, 20, 20, new LinkedList<>(), new LinkedList<>(), new LinkedList<>(), 1);
 
     public String getName() {
         return name;
@@ -59,5 +65,29 @@ public class Player {
 
     public void setCoins(double coins) {
         this.coins = coins;
+    }
+
+    public LinkedList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(LinkedList<Item> items) {
+        this.items = items;
+    }
+
+    public LinkedList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(LinkedList<Weapon> weapons) {
+        this.weapons = weapons;
+    }
+
+    public static Player getPlayer() {
+        return player;
+    }
+
+    public static void setPlayer(Player player) {
+        Player.player = player;
     }
 }
