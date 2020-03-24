@@ -2,11 +2,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class main_menu {
@@ -105,7 +105,27 @@ public class main_menu {
             }
         }else{
             BufferedReader inFile = Files.newBufferedReader(Paths.get(String.valueOf(file)), StandardCharsets.UTF_8);
-
+            String line;
+            line = inFile.readLine();
+            Player.player.setName(line);
+            line = inFile.readLine();
+            Player.player.setHealth(Double.parseDouble(line));
+            line = inFile.readLine();
+            Player.player.setMaxhealth(Double.parseDouble(line));
+            line = inFile.readLine();
+            String[] helper = line.split(",");
+            LinkedList<Effect> effects = new LinkedList<>();
+            for (int i = 0; i < helper.length; i++) {
+                Optional<Effect> optionalEffect = Effect.effects.stream().filter(n -> n.getName().equals(helper[0])).findFirst();
+                if (optionalEffect.isPresent()){
+                    effects.add(optionalEffect.get());
+                }else{
+                    throw new IllegalArgumentException("Effect doesn't exist!");
+                }
+            }
+            Player.player.setEffects(effects);
+            line = inFile.readLine();
+            Player.player.setCoins(Double.parseDouble(line));
         }
     }
 
