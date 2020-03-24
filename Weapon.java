@@ -6,11 +6,13 @@ public class Weapon {
     private String name;
     private double dmg;
     private double crit;
+    private String effect;
     private boolean equiped;
 
     static List<Weapon> weapons = Arrays.asList(
-            new Weapon("knife", 2, 3, false),
-            new Weapon("sharpened bone", 1, 2, false)
+            new Weapon("knife", 2, 3,"none" ,false),
+            new Weapon("sharpened bone", 1, 2, "none" ,false),
+            new Weapon("poison dart", 2, 1, "poison 1" ,false)
     );
 
     @Override
@@ -26,10 +28,11 @@ public class Weapon {
         this.equiped = false;
     }
 
-    public Weapon(String name, double dmg, double crit, boolean equiped) {
+    public Weapon(String name, double dmg, double crit, String effect, boolean equiped) {
         this.name = name;
         this.dmg = dmg;
         this.crit = crit;
+        this.effect = effect;
         this.equiped = equiped;
     }
 
