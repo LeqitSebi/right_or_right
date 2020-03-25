@@ -12,6 +12,7 @@ import java.util.Scanner;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class main_menu {
+    //TODO: add level support
     public static void main(String[] args) throws IOException {
         System.out.println("Hello Player. Welcome to Right or Right, a text adventure based on popular games like zork.");
         System.out.println("First of all: Do you want to start a new game or load a previous one?");
@@ -192,6 +193,7 @@ public class main_menu {
         out.write(Player.player.getHealth() + System.lineSeparator());
         out.write(Player.player.getMaxhealth() + System.lineSeparator());
         out.write(Player.player.getItems() + System.lineSeparator());
+        out.write(Player.player.getPotions() + System.lineSeparator());
         out.write(Player.player.getWeapons() + System.lineSeparator());
         out.write(Player.player.getEffects() + System.lineSeparator());
         out.write(Double.toString(Player.player.getCoins()));

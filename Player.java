@@ -9,6 +9,7 @@ public class Player {
     private LinkedList<Weapon> weapons;
     private LinkedList<Effect> effects;
     private double coins;
+    private int stage;
 
     public Player(String name, double health, double maxhealth, LinkedList<Item> items, LinkedList<Potion> potions, LinkedList<Weapon> weapons, LinkedList<Effect> effects, double coins) {
         this.name = name;
