@@ -8,7 +8,8 @@ public class Effect {
     private int lastingRounds;
 
     static List<Effect> effects = Arrays.asList(
-            new Effect("poison 1", 0, 1, 2)
+            new Effect("poison 1", 0, 1, 2),
+            new Effect("damage 1", 0, 2, 1)
     );
 
     public Effect(String name, double damageMult, double dmgPerRound, int lastingRounds) {

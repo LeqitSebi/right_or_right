@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Scanner;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class main_menu {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello Player. Welcome to Right or Right, a text adventure based on popular games like zork.");
@@ -17,7 +19,7 @@ public class main_menu {
         System.out.println("2) Start a new game");
         System.out.print(">> ");
         Scanner in = new Scanner(System.in);
-        while(true) {
+        while (true) {
             String s = in.nextLine();
             if (s.equals("1")) {
                 load_game();
@@ -38,13 +40,13 @@ public class main_menu {
         String s = in.nextLine();
         String currentname = s;
         File namedir = new File("saves/" + s + ".txt");
-        if (namedir.exists()){
+        if (namedir.exists()) {
             System.out.println("Savegame with this name already exists!");
             System.out.println("Do you want to load the game or overwrite it?");
             System.out.println("1) Load game");
             System.out.println("2) Overwrite game (start a new one)");
             System.out.print(">> ");
-            while(true) {
+            while (true) {
                 s = in.nextLine();
                 if (s.equals("1")) {
                     load_game();
@@ -54,14 +56,14 @@ public class main_menu {
                     System.out.println("Remember: Deleting the file is permanent. Which is quite a long time");
                     System.out.print(">> ");
                     s = in.nextLine();
-                    if (s.equals("yes")){
+                    if (s.equals("yes")) {
                         namedir.delete();
                         System.out.println("New Savegame created. The game will save automatically");
                         Player.player.setName(currentname);
                         save_game();
                         levels.level1();
                         break;
-                    }else{
+                    } else {
                         System.out.println("Do you want to load the game or overwrite it?");
                         System.out.println("1) Load game");
                         System.out.println("2) Overwrite game (start a new one)");
@@ -72,7 +74,7 @@ public class main_menu {
                     System.out.print(">> ");
                 }
             }
-        }else {
+        } else {
             System.out.println("Hello " + currentname + ". Welcome to the game");
             System.out.println("New Savegame created. The game will save automatically");
             Player.player.setName(currentname);
@@ -86,25 +88,25 @@ public class main_menu {
         Scanner in = new Scanner(System.in);
         String s = in.nextLine();
         File file = new File("saves/" + s + ".txt");
-        if (!file.exists()){
+        if (!file.exists()) {
             System.out.println("Player doesn't exist");
             System.out.println("Do you want to start a new game or try log in with an other Player?");
             System.out.println("1) Start a new game");
             System.out.println("2) Try an other Playername");
             System.out.println(">> ");
-            while(true){
+            while (true) {
                 s = in.nextLine();
-                if (s.equals("1")){
+                if (s.equals("1")) {
                     start_game();
-                }else if(s.equals("2")){
+                } else if (s.equals("2")) {
                     load_game();
-                }else{
+                } else {
                     System.out.println("Invalid number. Enter correct one!");
                     System.out.print(">> ");
                 }
             }
-        }else{
-            BufferedReader inFile = Files.newBufferedReader(Paths.get(String.valueOf(file)), StandardCharsets.UTF_8);
+        } else {
+            BufferedReader inFile = Files.newBufferedReader(Paths.get(String.valueOf(file)), UTF_8);
             String line;
             line = inFile.readLine();
             Player.player.setName(line);
@@ -112,30 +114,72 @@ public class main_menu {
             Player.player.setHealth(Double.parseDouble(line));
             line = inFile.readLine();
             Player.player.setMaxhealth(Double.parseDouble(line));
+
             line = inFile.readLine();
-            String[] helper = line.split(",");
-            LinkedList<Effect> items = new LinkedList<>();
-            //TODO: save player list
-            for (int i = 0; i < helper.length; i++) {
-                Optional<Item> optionalEffect = Item.items.stream().filter(n -> n.getName().equals(helper[0])).findFirst();
-                if (optionalEffect.isPresent()){
-                    items.add(optionalEffect.get());
-                }else{
-                    throw new IllegalArgumentException("Effect doesn't exist!");
+            String[] helper = line.replace("[", "").replace("]", "").split(",");
+            if (helper.length != 1) {
+                LinkedList<Item> items = new LinkedList<>();
+                for (int i = 1; i < helper.length; i++) {
+                    String[] finalHelper = helper;
+                    Optional<Item> optionalEffect = Item.items.stream().filter(n -> n.getName().equals(finalHelper[0])).findFirst();
+                    if (optionalEffect.isPresent()) {
+                        items.add(optionalEffect.get());
+                    } else {
+                        throw new IllegalArgumentException("Effect doesn't exist!");
+                    }
                 }
+                Player.player.setItems(items);
             }
+
             line = inFile.readLine();
-            helper = line.split(",");
-            LinkedList<Effect> effects = new LinkedList<>();
-            for (int i = 0; i < helper.length; i++) {
-                Optional<Effect> optionalEffect = Effect.effects.stream().filter(n -> n.getName().equals(helper[0])).findFirst();
-                if (optionalEffect.isPresent()){
-                    effects.add(optionalEffect.get());
-                }else{
-                    throw new IllegalArgumentException("Effect doesn't exist!");
+            helper = helper = line.replace("[", "").replace("]", "").split(",");
+            if (helper.length != 1) {
+                LinkedList<Potion> potions = new LinkedList<>();
+                for (int i = 1; i < helper.length; i++) {
+                    String[] finalHelper = helper;
+                    Optional<Potion> optionalEffect = Potion.potions.stream().filter(n -> n.getName().equals(finalHelper[0])).findFirst();
+                    if (optionalEffect.isPresent()) {
+                        potions.add(optionalEffect.get());
+                    } else {
+                        throw new IllegalArgumentException("Effect doesn't exist!");
+                    }
                 }
+                Player.player.setPotions(potions);
             }
-            Player.player.setEffects(effects);
+
+
+            line = inFile.readLine();
+            helper = helper = line.replace("[", "").replace("]", "").split(",");
+            if (helper.length != 1) {
+                LinkedList<Weapon> weapons = new LinkedList<>();
+                for (int i = 1; i < helper.length; i++) {
+                    String[] finalHelper = helper;
+                    Optional<Weapon> optionalEffect = Weapon.weapons.stream().filter(n -> n.getName().equals(finalHelper[0])).findFirst();
+                    if (optionalEffect.isPresent()) {
+                        weapons.add(optionalEffect.get());
+                    } else {
+                        throw new IllegalArgumentException("Effect doesn't exist!");
+                    }
+                }
+                Player.player.setWeapons(weapons);
+            }
+
+            line = inFile.readLine();
+            helper = helper = line.replace("[", "").replace("]", "").split(",");
+            if (helper.length != 1) {
+                LinkedList<Effect> effects = new LinkedList<>();
+                for (int i = 1; i < helper.length; i++) {
+                    String[] finalHelper1 = helper;
+                    Optional<Effect> optionalEffect = Effect.effects.stream().filter(n -> n.getName().equals(finalHelper1[0])).findFirst();
+                    if (optionalEffect.isPresent()) {
+                        effects.add(optionalEffect.get());
+                    } else {
+                        throw new IllegalArgumentException("Effect doesn't exist!");
+                    }
+                }
+                Player.player.setEffects(effects);
+            }
+
             line = inFile.readLine();
             Player.player.setCoins(Double.parseDouble(line));
         }
@@ -143,15 +187,14 @@ public class main_menu {
 
     public static void save_game() throws IOException {
         File file = new File("saves/" + Player.player.getName() + ".txt");
-        file.delete();
-        file.createNewFile();
-        BufferedWriter out = Files.newBufferedWriter(Paths.get(String.valueOf(file)), StandardCharsets.UTF_8);
+        BufferedWriter out = Files.newBufferedWriter(file.toPath());
         out.write(Player.player.getName() + System.lineSeparator());
         out.write(Player.player.getHealth() + System.lineSeparator());
         out.write(Player.player.getMaxhealth() + System.lineSeparator());
         out.write(Player.player.getItems() + System.lineSeparator());
         out.write(Player.player.getWeapons() + System.lineSeparator());
         out.write(Player.player.getEffects() + System.lineSeparator());
-        out.write((int) Player.player.getCoins());
+        out.write(Double.toString(Player.player.getCoins()));
+        out.close();
     }
 }

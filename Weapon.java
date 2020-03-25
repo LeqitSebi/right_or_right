@@ -32,8 +32,20 @@ public class Weapon {
         this.name = name;
         this.dmg = dmg;
         this.crit = crit;
-        this.effect = effect;
+        if (effect.equals("none")){
+            this.effect = null;
+        }else{
+            this.effect = effect;
+        }
         this.equiped = equiped;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
     }
 
     public String getName() {
